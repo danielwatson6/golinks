@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>go/{{shortcut}}</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="center">
+      <h1><a href="http://localhost:5000/go/{{link}}">go/{{shortcut}}</a> doesn't exist!</h1>
+      <form id="form">
+        Shortcut: <input type="text" id="form-shortcut" value="{{shortcut}}" />
+        <br>
+        Target URL: <input type="url" id="form-url" placeholder="Your URL..." />
+        <br>
+        <input type="submit" id="form-submit" value="Create golink" class="button" />
+        <br>
+        <span id="form-error"></span>
+      </form>
+    </div>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('#form').addEventListener('submit', e => {
+          e.preventDefault();
+          const shortcut = document.querySelector('#form-shortcut').value;
+          const url = document.querySelector('#form-url').value;
+          const submitEl = document.querySelector('#form-submit');
+          const errorEl = document.querySelector('#form-error');
+          fetch('/new', {
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+              },
+              method: 'POST',
+              body: JSON.stringify({ shortcut, url }),
+          }).then(response => response.json()).then(result => {
+            if (result.success) {
+              const successEl = document.createElement('span');
+              successEl.textContent = 'Success!';
+              submitEl.replaceWith(successEl);
+            }
+            else if (result.description) {
+              errorEl.innerHTML = result.description;
+            }
+            else {
+              errorEl.innerHTML = 'Unknown error :(';
+            }
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

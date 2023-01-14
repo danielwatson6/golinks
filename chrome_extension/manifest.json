@@ -1,0 +1,12 @@
+{
+  "manifest_version": 2,
+  "name": "GoLinks",
+  "version": "0.1",
+  "description": "Redirects http://go/ links to localhost:5000",
+  "background": {
+    "scripts": [
+      "redirect.js"
+    ]
+  },
+  "permissions": ["webRequest", "webRequestBlocking", "<all_urls>"]
+}
