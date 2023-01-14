@@ -1,7 +1,8 @@
 #!/bin/bash
 
-source venv/bin/activate
+source .env/bin/activate
 
 export FLASK_APP=goserver.py
 export FLASK_DEBUG=0
-python -m flask run
+
+gunicorn goserver:app --bind 127.0.0.1:5000 --pid ./PIDFILE --daemon
